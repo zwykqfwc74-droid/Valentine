@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Svasti — Emergency Valentine Mission 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", cursive;
+  background: linear-gradient(135deg,#ff6fa5,#ffc2d9);
+  text-align: center;
+  overflow: hidden;
+  color: white;
+}
+
+.screen {
+  display: none;
+  height: 100vh;
+  padding-top: 10vh;
+}
+
+.active {
+  display: block;
+}
+
+h1 {
+  font-size: 3em;
+  text-shadow: 2px 2px 10px #ff1a75;
+}
+
+button {
+  padding: 15px 28px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  margin: 10px;
+  transition: 0.2s;
+}
+
+.primary {
+  background: #ff1a75;
+  color: white;
+}
+
+.primary:hover {
+  transform: scale(1.15);
+}
+
+.secondary {
+  background: white;
+  color: #ff1a75;
+  position: absolute;
+}
+
+.card {
+  background: rgba(255,255,255,0.15);
+  padding: 30px;
+  border-radius: 20px;
+  width: 80%;
+  margin: auto;
+}
+
+.hearts {
+  position: fixed;
+  font-size: 24px;
+  animation: floatUp 4s linear forwards;
+}
+
+@keyframes floatUp {
+  from {transform: translateY(0); opacity:1;}
+  to {transform: translateY(-100vh); opacity:0;}
+}
+
+#score {
+  font-size: 1.5em;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<iframe width="0" height="0"
+src="https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&loop=1&playlist=2Vv-BfVoq4g"
+allow="autoplay">
+</iframe>
+
+<!-- Screen 1 -->
+<div class="screen active" id="start">
+  <h1>🚨 ATTENTION SVASTI 🚨</h1>
+  <div class="card">
+    <p>This is a highly classified love mission.</p>
+    <p>You must pass the Valentine Test.</p>
+    <button class="primary" onclick="startGame()">Begin Mission 💘</button>
+  </div>
+</div>
+
+<!-- Screen 2 — Mini Game -->
+<div class="screen" id="game">
+  <h1>🎯 Catch The Love!</h1>
+  <p>Click 5 hearts to unlock the question!</p>
+  <p id="score">Hearts collected: 0 / 5</p>
+</div>
+
+<!-- Screen 3 — Proposal -->
+<div class="screen" id="proposal">
+  <h1>Svasti 💕</h1>
+  <div class="card">
+    <p>You are officially certified as</p>
+    <h2>✨ Extremely Adorable ✨</h2>
+    <p>Will you be my Valentine?</p>
+
+    <div style="position:relative;height:120px;">
+      <button class="primary" onclick="sayYes()">YES 💖</button>
+      <button id="noBtn" class="secondary">No 🙈</button>
+    </div>
+
+    <div id="result" style="display:none;font-size:2em;margin-top:20px;">
+      BEST DECISION EVER 😌💞
+    </div>
+  </div>
+</div>
+
+<script>
+let score = 0;
+
+// Screen switch
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// Start mini game
+function startGame(){
+  show("game");
+  spawnHearts();
+}
+
+// Spawn clickable hearts
+function spawnHearts(){
+  const heart = document.createElement("div");
+  heart.innerHTML = "💖";
+  heart.style.position = "fixed";
+  heart.style.left = Math.random()*90 + "vw";
+  heart.style.top = Math.random()*90 + "vh";
+  heart.style.fontSize = "40px";
+  heart.style.cursor = "pointer";
+
+  heart.onclick = () => {
+    heart.remove();
+    score++;
+    document.getElementById("score").innerText =
+      "Hearts collected: " + score + " / 5";
+
+    if(score >= 5){
+      show("proposal");
+    } else {
+      spawnHearts();
+    }
+  };
+
+  document.body.appendChild(heart);
+}
+
+// No button runs away
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.left = Math.random()*300 + "px";
+  noBtn.style.top = Math.random()*100 + "px";
+});
+
+// YES celebration
+function sayYes(){
+  document.getElementById("result").style.display = "block";
+  for(let i=0;i<40;i++){
+    const h=document.createElement("div");
+    h.className="hearts";
+    h.innerHTML="💗";
+    h.style.left=Math.random()*100+"vw";
+    h.style.bottom="-20px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
+}
+</script>
+
+</body>
+</html>
